@@ -10,3 +10,10 @@ test("returns the number itself if only one number", () => {
 test("returns sum for two or more numbers", () => {
   expect(add("1,2,6,7,5,67,4,6,4,6")).toBe(108);
 });
+test("supports newlines as separators", () => {
+  expect(add("1\n2,3")).toBe(6);
+});
+
+test("supports custom delimiter", () => {
+  expect(add("//;\n1;2")).toBe(3);
+});

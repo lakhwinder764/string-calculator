@@ -1,12 +1,21 @@
 function add(numbers) {
   if (!numbers) return 0;
-  if (typeof numbers === "string") {
-    if (numbers === "") return 0;
-    const nums = numbers.split(",").map(Number);
-    return nums.reduce((sum, n) => sum + n, 0);
+  let delimiter = /[,\n]/;
+
+  if (numbers.startsWith("//")) {
+    const parts = numbers.split("\n");
+    delimiter = new RegExp(parts[0].slice(2));
+    numbers = parts[1];
   }
-  // If it's not a string (original array behavior)
-  return numbers.reduce((sum, n) => sum + n, 0);
+
+  const values = numbers.split(delimiter).map(Number);
+  const negatives = values.filter((n) => n < 0);
+
+  if (negatives.length > 0) {
+    throw new Error(`negative numbers not allowed ${negatives.join(",")}`);
+  }
+
+  return values.reduce((sum, n) => sum + n, 0);
 }
 
 module.exports = { add };
